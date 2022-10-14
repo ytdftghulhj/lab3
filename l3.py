@@ -9,22 +9,26 @@ class Record():
     else:
       self.date = dt.date.today
 
+  def __str__(self):
+    return f'количество {self.amount}, коментарий {self.comment} дата {self.date}'
+
 
 class Calculator():
   def __init__(self,limit):
     self.limit = limit
     self.records = []
+    self.text =""
+    self.today_amount=0
   
   def add_record(self,new_record):
     self.records.append(new_record)
   
   def get_today_stats(self):
-    today_amount=0
     today=dt.date.today
     for record in self.records:
       if record.date == today:
-        today_amount += record.amount
-    return today_amount
+        self.today_amount += record.amount
+    return self.today_amount
   
   def get_week_stats(self):
     today = dt.date.today
@@ -46,12 +50,12 @@ class CashCalculator(Calculator):
       elif currency == "usd":
         remained = remained/USD_RATE
       if remained > 0:
-        text="У вас осталось еще " + str(remained)+" "+ currency
+        self.text="У вас осталось еще " + str(remained)+" "+ currency
       elif remained < 0:
-        text= "Денег нет, держись: твой долг "+ str(remained/-1)+" "+ currency
+        self.text= "Денег нет, держись: твой долг "+ str(remained/-1)+" "+ currency
       else:
-        text="Денег нет, держись"
-      return text
+        self.text="Денег нет, держись"
+      return self.text
       
       
 
